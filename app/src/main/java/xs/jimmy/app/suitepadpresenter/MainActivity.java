@@ -11,7 +11,6 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -81,7 +80,17 @@ public class MainActivity extends AppCompatActivity {
         Intent intentProxy = new Intent();
         intentProxy.setClassName("xs.jimmy.app.suitepadproxy", "xs.jimmy.app.suitepadproxy.ProxyService");
 
-        this.bindService(intentProxy, new RemoteServiceConnection(), Context.BIND_AUTO_CREATE);
+        this.bindService(intentProxy, new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+
+            }
+        }, Context.BIND_AUTO_CREATE);
     }
 
     @Override
@@ -94,20 +103,6 @@ public class MainActivity extends AppCompatActivity {
         {
             this.unbindService(null);
             this.isBound = false;
-        }
-    }
-
-    private class RemoteServiceConnection implements ServiceConnection {
-        @Override
-        public void onServiceConnected(ComponentName component, IBinder binder) {
-            Toast.makeText(getApplicationContext(),"Service connected", Toast.LENGTH_LONG).show();
-            isBound = true;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName component) {
-            Toast.makeText(getApplicationContext(),"Service disconnected", Toast.LENGTH_LONG).show();
-            isBound = false;
         }
     }
 
